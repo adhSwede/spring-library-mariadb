@@ -1,61 +1,72 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.dtos.BookWithAuthorDTO;
+import dev.jonas.library.dtos.BookDetailsDTO;
+import dev.jonas.library.dtos.BookInputDTO;
+
+import dev.jonas.library.entities.Author;
 import dev.jonas.library.entities.Book;
+
 import dev.jonas.library.exceptions.BookNotFoundException;
+
+import dev.jonas.library.mappers.DtoToEntityMapper;
+import dev.jonas.library.mappers.EntityToDtoMapper;
+
+import dev.jonas.library.repositories.AuthorRepository;
 import dev.jonas.library.repositories.BookRepository;
 
+import dev.jonas.library.utils.EntityFetcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     @Override
-    public List<BookWithAuthorDTO> getAllBooks() {
+    public List<BookDetailsDTO> getAllBooks() {
         return bookRepository.findAll().stream()
-                .map(book -> new BookWithAuthorDTO(
-                        book.getTitle(),
-                        book.getAuthor().getFirstName() + " " + book.getAuthor().getLastName()
-                ))
+                .map(EntityToDtoMapper::mapToBookDetailsDto)
                 .toList();
     }
 
     @Override
-    public BookWithAuthorDTO getBookById(Long id) {
-        Book book = bookRepository.findById(id)
-                .orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " not found"));
+    public BookDetailsDTO getBookById(Long bookId) {
+        Book book = EntityFetcher.getBookOrThrow(bookId, bookRepository);
 
-        return new BookWithAuthorDTO(
-                book.getTitle(),
-                book.getAuthor().getFirstName() + " " + book.getAuthor().getLastName()
-        );
+        return EntityToDtoMapper.mapToBookDetailsDto(book);
     }
 
     @Override
-    public Book addBook(Book book) {
-        return bookRepository.save(book);
+    public BookDetailsDTO addBook(BookInputDTO dto) {
+        Author author = EntityFetcher.getAuthorOrThrow(dto.getAuthorId(), authorRepository);
+
+        Book book = DtoToEntityMapper.mapToBookEntity(dto, author);
+        Book savedBook = bookRepository.save(book);
+
+        return EntityToDtoMapper.mapToBookDetailsDto(savedBook);
     }
 
     @Override
-    public Book updateBook(Long id, Book updatedBook) {
-        return bookRepository.findById(id)
-                .map(existingBook -> {
-                    existingBook.setTitle(updatedBook.getTitle());
-                    existingBook.setPublicationYear(updatedBook.getPublicationYear());
-                    existingBook.setTotalCopies(updatedBook.getTotalCopies());
-                    existingBook.setAvailableCopies(updatedBook.getAvailableCopies());
-                    return bookRepository.save(existingBook);
-                })
-                .orElseThrow(() -> new BookNotFoundException("Book with ID " + id + " not found"));
+    public BookDetailsDTO updateBook(Long bookId, BookInputDTO dto) {
+        Author author = EntityFetcher.getAuthorOrThrow(dto.getAuthorId(), authorRepository);
+        Book updatedBook = EntityFetcher.getBookOrThrow(bookId, bookRepository);
+
+        updatedBook.setTitle(dto.getTitle());
+        updatedBook.setAuthor(author);
+        updatedBook.setPublicationYear(dto.getPublicationYear());
+        updatedBook.setAvailableCopies(dto.getAvailableCopies());
+        updatedBook.setTotalCopies(dto.getTotalCopies());
+
+        Book savedBook = bookRepository.save(updatedBook);
+        return EntityToDtoMapper.mapToBookDetailsDto(savedBook);
     }
 
     @Override
@@ -67,8 +78,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public void decrementAvailableCopies(Long bookId){
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException("Book with ID " + bookId + " not found"));
+        Book book = EntityFetcher.getBookOrThrow(bookId, bookRepository);
 
         if  (book.getAvailableCopies() <= 0){
             throw new IllegalStateException("Book with ID " + bookId + " has no available copies");
@@ -76,13 +86,13 @@ public class BookServiceImpl implements BookService {
 
         book.setAvailableCopies(book.getAvailableCopies() - 1);
         bookRepository.save(book);
-    };
+    }
 
     public void incrementAvailableCopies(Long bookId) {
-        Book book = bookRepository.findById(bookId)
-                .orElseThrow(() -> new BookNotFoundException("Book with ID " + bookId + " not found"));
+        Book book = EntityFetcher.getBookOrThrow(bookId, bookRepository);
 
         book.setAvailableCopies(book.getAvailableCopies() + 1);
         bookRepository.save(book);
     }
+
 }

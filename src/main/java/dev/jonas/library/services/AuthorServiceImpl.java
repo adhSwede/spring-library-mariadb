@@ -1,10 +1,14 @@
 package dev.jonas.library.services;
 
 import dev.jonas.library.dtos.AuthorDTO;
+import dev.jonas.library.dtos.AuthorInputDTO;
 import dev.jonas.library.entities.Author;
 import dev.jonas.library.exceptions.AuthorNotFoundException;
+import dev.jonas.library.mappers.DtoToEntityMapper;
+import dev.jonas.library.mappers.EntityToDtoMapper;
 import dev.jonas.library.repositories.AuthorRepository;
 
+import dev.jonas.library.utils.EntityFetcher;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,46 +24,35 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public List<AuthorDTO> getAllAuthorDTOs() {
         return authorRepository.findAll().stream()
-                .map(author -> new AuthorDTO(
-                        author.getAuthorId(),
-                        author.getFirstName(),
-                        author.getLastName(),
-                        author.getBirthYear(),
-                        author.getNationality()
-                ))
+                .map(EntityToDtoMapper::mapToAuthorDto)
                 .toList();
     }
 
     @Override
-    public AuthorDTO getAuthorDtoById(Long id) {
-        Author author = authorRepository.findById(id)
-                .orElseThrow(() -> new AuthorNotFoundException("Author with ID " + id + " not found"));
+    public AuthorDTO getAuthorDtoById(Long authorId) {
+        Author author = EntityFetcher.getAuthorOrThrow(authorId, authorRepository);
 
-        return new AuthorDTO(
-                author.getAuthorId(),
-                author.getFirstName(),
-                author.getLastName(),
-                author.getBirthYear(),
-                author.getNationality()
-        );
+        return EntityToDtoMapper.mapToAuthorDto(author);
     }
 
     @Override
-    public Author addAuthor(Author author) {
-        return authorRepository.save(author);
+    public AuthorDTO addAuthor(AuthorInputDTO dto) {
+        Author author = DtoToEntityMapper.mapToAuthorEntity(dto);
+        Author savedAuthor = authorRepository.save(author);
+        return EntityToDtoMapper.mapToAuthorDto(savedAuthor);
     }
 
     @Override
-    public Author updateAuthor(Long id, Author updatedAuthor) {
-        return authorRepository.findById(id)
-                .map(existingAuthor -> {
-                    existingAuthor.setFirstName(updatedAuthor.getFirstName());
-                    existingAuthor.setLastName(updatedAuthor.getLastName());
-                    existingAuthor.setBirthYear(updatedAuthor.getBirthYear());
-                    existingAuthor.setNationality(updatedAuthor.getNationality());
-                    return authorRepository.save(existingAuthor);
-                })
-                .orElseThrow(() -> new AuthorNotFoundException("Author with ID " + id + " not found"));
+    public AuthorDTO updateAuthor(Long authorId, AuthorInputDTO dto) {
+        Author updatedAuthor = EntityFetcher.getAuthorOrThrow(authorId, authorRepository);
+
+        updatedAuthor.setFirstName(dto.getFirstName());
+        updatedAuthor.setLastName(dto.getLastName());
+        updatedAuthor.setBirthYear(dto.getBirthYear());
+        updatedAuthor.setNationality(dto.getNationality());
+
+        Author savedAuthor = authorRepository.save(updatedAuthor);
+        return EntityToDtoMapper.mapToAuthorDto(savedAuthor);
     }
 
     @Override
