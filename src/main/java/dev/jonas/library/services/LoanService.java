@@ -1,20 +1,23 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.entities.Loan;
+import dev.jonas.library.dtos.LoanDTO;
+import dev.jonas.library.dtos.LoanInputDTO;
+import dev.jonas.library.entities.Book;
+import dev.jonas.library.entities.User;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface LoanService {
     // GET
-    List<Loan> getAllLoans();
-    Optional<Loan> getLoanById(Long id);
+    List<LoanDTO> getAllLoanDTOs();
+
+    LoanDTO getLoanById(Long loanId);
 
     // POST
-    Loan addLoan(Loan loan);
+    LoanDTO addLoan(LoanInputDTO dto, User user, Book book);
 
     // PUT
-    Loan updateLoan(Long id, Loan loan);
+    LoanDTO updateLoan(Long loanId, LoanInputDTO dto);
 
     // DELETE
     void deleteLoan(Long id);

@@ -4,7 +4,11 @@ import dev.jonas.library.dtos.UserDTO;
 import dev.jonas.library.dtos.UserInputDTO;
 import dev.jonas.library.entities.User;
 import dev.jonas.library.exceptions.UserNotFoundException;
+import dev.jonas.library.mappers.DtoToEntityMapper;
+import dev.jonas.library.mappers.EntityToDtoMapper;
 import dev.jonas.library.repositories.UserRepository;
+import dev.jonas.library.updaters.UserUpdater;
+import dev.jonas.library.utils.EntityFetcher;
 
 import org.springframework.stereotype.Service;
 
@@ -22,52 +26,29 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDTO> getAllUserDTOs() {
         return userRepository.findAll().stream()
-                .map(user -> new UserDTO(
-                        user.getUserId(),
-                        user.getFirstName(),
-                        user.getLastName(),
-                        user.getEmail(),
-                        user.getRegistrationDate()
-                ))
+                .map(EntityToDtoMapper::mapToUserDto)
                 .toList();
     }
 
-
     @Override
-    public UserDTO getUserDtoById(Long id) {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
-
-        return new UserDTO(
-                user.getUserId(),
-                user.getFirstName(),
-                user.getLastName(),
-                user.getEmail(),
-                user.getRegistrationDate()
-        );
+    public UserDTO getUserDtoById(Long userId) {
+        User user = EntityFetcher.getUserOrThrow(userId, userRepository);
+        return EntityToDtoMapper.mapToUserDto(user);
     }
 
     @Override
-    public User addUser(UserInputDTO dto) {
-        User user = new User();
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setEmail(dto.getEmail());
-        user.setPassword(dto.getPassword());
-        return userRepository.save(user);
+    public UserDTO addUser(UserInputDTO dto) {
+        User user = DtoToEntityMapper.mapToUserEntity(dto);
+        User savedUser = userRepository.save(user);
+        return EntityToDtoMapper.mapToUserDto(savedUser);
     }
 
     @Override
-    public User updateUser (Long id, UserInputDTO updatedUser) {
-        return userRepository.findById(id)
-                .map(existingUser -> {
-                    existingUser.setFirstName(updatedUser.getFirstName());
-                    existingUser.setLastName(updatedUser.getLastName());
-                    existingUser.setEmail(updatedUser.getEmail());
-                    existingUser.setPassword(updatedUser.getPassword());
-                    return userRepository.save(existingUser);
-                })
-                .orElseThrow(() -> new UserNotFoundException("User with ID " + id + " not found"));
+    public UserDTO updateUser(Long userId, UserInputDTO updatedUser) {
+        User user = EntityFetcher.getUserOrThrow(userId, userRepository);
+        UserUpdater.apply(user, updatedUser);
+        User savedUser = userRepository.save(user);
+        return EntityToDtoMapper.mapToUserDto(savedUser);
     }
 
     @Override

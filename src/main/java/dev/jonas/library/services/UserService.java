@@ -13,10 +13,10 @@ public interface UserService {
     UserDTO getUserDtoById(Long id);
 
     // POST
-    User addUser(UserInputDTO dto);
+    UserDTO addUser(UserInputDTO dto);
 
     // PUT
-    User updateUser(Long id, UserInputDTO dto);
+    UserDTO updateUser(Long id, UserInputDTO dto);
 
     // DELETE
     void deleteUserById(Long id);

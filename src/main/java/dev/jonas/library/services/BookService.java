@@ -1,20 +1,20 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.dtos.BookWithAuthorDTO;
-import dev.jonas.library.entities.Book;
+import dev.jonas.library.dtos.BookDetailsDTO;
+import dev.jonas.library.dtos.BookInputDTO;
 
 import java.util.List;
 
 public interface BookService {
     // GET
-    List<BookWithAuthorDTO> getAllBooks();
-    BookWithAuthorDTO getBookById(Long id);
+    List<BookDetailsDTO> getAllBooks();
+    BookDetailsDTO getBookById(Long id);
 
     // POST
-    Book addBook(Book book);
+    BookDetailsDTO addBook(BookInputDTO dto);
 
     // PUT
-    Book updateBook(Long id, Book book);
+    BookDetailsDTO updateBook(Long id, BookInputDTO dto);
 
     // DELETE
     void deleteBookById(Long id);

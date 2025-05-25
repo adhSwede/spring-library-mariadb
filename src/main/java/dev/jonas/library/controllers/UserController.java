@@ -2,7 +2,6 @@ package dev.jonas.library.controllers;
 
 import dev.jonas.library.dtos.UserDTO;
 import dev.jonas.library.dtos.UserInputDTO;
-import dev.jonas.library.entities.User;
 import dev.jonas.library.services.UserService;
 
 import org.springframework.http.ResponseEntity;
@@ -33,13 +32,13 @@ public class UserController {
 
     // ########## [ POST ] ##########
     @PostMapping
-    public User addUser(@RequestBody UserInputDTO dto) {
+    public UserDTO addUser(@RequestBody UserInputDTO dto) {
         return userService.addUser(dto);
     }
 
     // ########## [ PUT ] ##########
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserInputDTO dto) {
+    public ResponseEntity<UserDTO> updateUser(@PathVariable Long id, @RequestBody UserInputDTO dto) {
         return ResponseEntity.ok(userService.updateUser(id, dto));
     }
 

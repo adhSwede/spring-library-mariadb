@@ -1,21 +1,22 @@
 package dev.jonas.library.services;
 
 import dev.jonas.library.dtos.AuthorDTO;
-import dev.jonas.library.entities.Author;
+import dev.jonas.library.dtos.AuthorInputDTO;
 
 import java.util.List;
 
 public interface AuthorService {
     // GET
     List<AuthorDTO> getAllAuthorDTOs();
-    AuthorDTO getAuthorDtoById(Long id);
+
+    AuthorDTO getAuthorDtoById(Long authorId);
 
     // POST
-    Author addAuthor(Author author);
+    AuthorDTO addAuthor(AuthorInputDTO dto);
 
     // PUT
-    Author updateAuthor(Long id, Author author);
+    AuthorDTO updateAuthor(Long authorId, AuthorInputDTO dto);
 
     // DELETE
-    void deleteAuthorById(Long id);
+    void deleteAuthorById(Long authorId);
 }
