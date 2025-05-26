@@ -1,9 +1,8 @@
 package dev.jonas.library.controllers;
 
-import dev.jonas.library.dtos.UserDTO;
-import dev.jonas.library.dtos.UserInputDTO;
+import dev.jonas.library.dtos.user.UserDTO;
+import dev.jonas.library.dtos.user.UserInputDTO;
 import dev.jonas.library.services.UserService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

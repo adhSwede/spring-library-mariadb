@@ -1,4 +1,4 @@
-package dev.jonas.library.dtos;
+package dev.jonas.library.dtos.author;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

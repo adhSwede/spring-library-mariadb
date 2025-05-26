@@ -1,9 +1,8 @@
 package dev.jonas.library.controllers;
 
-import dev.jonas.library.dtos.AuthorDTO;
-import dev.jonas.library.dtos.AuthorInputDTO;
+import dev.jonas.library.dtos.author.AuthorDTO;
+import dev.jonas.library.dtos.author.AuthorInputDTO;
 import dev.jonas.library.services.AuthorService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,16 +36,4 @@ public class AuthorController {
         return ResponseEntity.ok(authorService.addAuthor(dto));
     }
 
-    // ########## [ PUT ] ##########
-    @PutMapping("/{id}")
-    public ResponseEntity<AuthorDTO> updateAuthor(@PathVariable Long id, @RequestBody AuthorInputDTO dto) {
-        return ResponseEntity.ok(authorService.updateAuthor(id, dto));
-    }
-
-    // ########## [ DELETE ] ##########
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable Long id) {
-        authorService.deleteAuthorById(id);
-        return ResponseEntity.noContent().build();
-    }
 }

@@ -1,5 +1,7 @@
-package dev.jonas.library.dtos;
+package dev.jonas.library.dtos.loan;
 
+import dev.jonas.library.dtos.user.UserDTO;
+import dev.jonas.library.dtos.book.BookDetailsDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

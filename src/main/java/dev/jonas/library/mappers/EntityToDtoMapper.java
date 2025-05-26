@@ -1,6 +1,9 @@
 package dev.jonas.library.mappers;
 
-import dev.jonas.library.dtos.*;
+import dev.jonas.library.dtos.author.AuthorDTO;
+import dev.jonas.library.dtos.book.BookDetailsDTO;
+import dev.jonas.library.dtos.loan.LoanDTO;
+import dev.jonas.library.dtos.user.UserDTO;
 import dev.jonas.library.entities.*;
 
 public class EntityToDtoMapper {

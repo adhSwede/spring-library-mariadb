@@ -1,4 +1,4 @@
-package dev.jonas.library.dtos;
+package dev.jonas.library.dtos.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,10 +7,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class AuthorInputDTO {
-    private Long authorId;
+public class UserInputDTO {
     private String firstName;
     private String lastName;
-    private Integer birthYear;
-    private String nationality;
+    private String email;
+    private String password;
 }

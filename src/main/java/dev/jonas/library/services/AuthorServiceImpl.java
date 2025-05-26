@@ -1,7 +1,7 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.dtos.AuthorDTO;
-import dev.jonas.library.dtos.AuthorInputDTO;
+import dev.jonas.library.dtos.author.AuthorDTO;
+import dev.jonas.library.dtos.author.AuthorInputDTO;
 import dev.jonas.library.entities.Author;
 import dev.jonas.library.exceptions.AuthorNotFoundException;
 import dev.jonas.library.mappers.DtoToEntityMapper;

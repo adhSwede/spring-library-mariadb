@@ -4,12 +4,10 @@ import dev.jonas.library.entities.Author;
 import dev.jonas.library.entities.Book;
 import dev.jonas.library.entities.Loan;
 import dev.jonas.library.entities.User;
-
 import dev.jonas.library.exceptions.AuthorNotFoundException;
 import dev.jonas.library.exceptions.BookNotFoundException;
 import dev.jonas.library.exceptions.LoanNotFoundException;
 import dev.jonas.library.exceptions.UserNotFoundException;
-
 import dev.jonas.library.repositories.AuthorRepository;
 import dev.jonas.library.repositories.BookRepository;
 import dev.jonas.library.repositories.LoanRepository;

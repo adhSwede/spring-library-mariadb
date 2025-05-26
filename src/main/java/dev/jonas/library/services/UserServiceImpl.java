@@ -1,7 +1,7 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.dtos.UserDTO;
-import dev.jonas.library.dtos.UserInputDTO;
+import dev.jonas.library.dtos.user.UserDTO;
+import dev.jonas.library.dtos.user.UserInputDTO;
 import dev.jonas.library.entities.User;
 import dev.jonas.library.exceptions.UserNotFoundException;
 import dev.jonas.library.mappers.DtoToEntityMapper;

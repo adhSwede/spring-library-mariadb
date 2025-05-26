@@ -1,6 +1,6 @@
 package dev.jonas.library.updaters;
 
-import dev.jonas.library.dtos.UserInputDTO;
+import dev.jonas.library.dtos.user.UserInputDTO;
 import dev.jonas.library.entities.User;
 
 public class UserUpdater {

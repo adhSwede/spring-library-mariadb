@@ -1,13 +1,10 @@
 package dev.jonas.library.controllers;
 
-import dev.jonas.library.dtos.BookDetailsDTO;
-import dev.jonas.library.dtos.BookInputDTO;
-import dev.jonas.library.entities.Book;
+import dev.jonas.library.dtos.book.BookDetailsDTO;
+import dev.jonas.library.dtos.book.BookInputDTO;
 import dev.jonas.library.services.BookService;
-
 import lombok.Getter;
 import lombok.Setter;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,23 +31,17 @@ public class BookController {
         return ResponseEntity.ok(bookService.getBookById(id));
     }
 
+    @GetMapping("/books/search")
+    public List<BookDetailsDTO> searchBooks(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author) {
+        return bookService.searchBooks(title, author);
+    }
+
     // ########## [ POST ] ##########
     @PostMapping("/books")
     public BookDetailsDTO addBook(@RequestBody BookInputDTO dto) {
         return bookService.addBook(dto);
-    }
-
-    // ########## [ PUT ] ##########
-    @PutMapping("books/{id}")
-    public ResponseEntity<BookDetailsDTO> updateBook(@PathVariable Long id, @RequestBody BookInputDTO dto) {
-        return ResponseEntity.ok(bookService.updateBook(id, dto));
-    }
-
-    // ########## [ DELETE ] ##########
-    @DeleteMapping("/books/{id}")
-    public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
-        bookService.deleteBookById(id);
-        return ResponseEntity.noContent().build(); // HTTP 204
     }
 
 }

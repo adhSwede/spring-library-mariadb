@@ -1,4 +1,4 @@
-package dev.jonas.library.dtos;
+package dev.jonas.library.dtos.loan;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoanInputDTO {
+public class LoanCreateDTO {
     private Long userId;
     private Long bookId;
 }

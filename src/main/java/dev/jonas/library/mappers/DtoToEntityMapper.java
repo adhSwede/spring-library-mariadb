@@ -1,7 +1,9 @@
 package dev.jonas.library.mappers;
 
-import dev.jonas.library.dtos.*;
-
+import dev.jonas.library.dtos.author.AuthorInputDTO;
+import dev.jonas.library.dtos.book.BookInputDTO;
+import dev.jonas.library.dtos.loan.LoanCreateDTO;
+import dev.jonas.library.dtos.user.UserInputDTO;
 import dev.jonas.library.entities.Author;
 import dev.jonas.library.entities.Book;
 import dev.jonas.library.entities.Loan;
@@ -33,7 +35,7 @@ public class DtoToEntityMapper {
     }
 
     // ########## [ Loans ] ##########
-    public static Loan mapToLoanEntity(LoanInputDTO dto, User user, Book book) {
+    public static Loan mapToLoanEntity(LoanCreateDTO dto, User user, Book book) {
         Loan loan = new Loan();
         loan.setUser(user);
         loan.setBook(book);

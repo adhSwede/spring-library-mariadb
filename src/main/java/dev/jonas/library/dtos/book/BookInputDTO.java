@@ -1,4 +1,4 @@
-package dev.jonas.library.dtos;
+package dev.jonas.library.dtos.book;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDetailsDTO {
-    private Long bookId;
+
+public class BookInputDTO {
     private String title;
-    private String authorName;
     private Integer publicationYear;
-    private long totalCopies;
     private long availableCopies;
+    private long totalCopies;
+    private Long authorId;
 }

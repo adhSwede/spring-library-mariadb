@@ -1,7 +1,7 @@
 package dev.jonas.library.services;
 
-import dev.jonas.library.dtos.AuthorDTO;
-import dev.jonas.library.dtos.AuthorInputDTO;
+import dev.jonas.library.dtos.author.AuthorDTO;
+import dev.jonas.library.dtos.author.AuthorInputDTO;
 
 import java.util.List;
 
